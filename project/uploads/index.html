@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Eyes Films — We See the Unseen</title>
+<meta name="description" content="Eyes Films — an Abu Dhabi creative production house. Cinematic film, photography, aerial, 3D and color grading. We see the unseen." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --ink:#f4f1ea;
+    --muted:#8c8881;
+    --line:rgba(255,255,255,.09);
+    --accent:#C1272D;
+    --accent-2:#8f1b20;
+    --max:1340px;
+    --ease:cubic-bezier(.2,.8,.2,1);
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{background:var(--bg);color:var(--ink)}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;font-weight:300;line-height:1.55;letter-spacing:.005em;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none;
+  }
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .ar{font-family:'Tajawal',sans-serif;direction:rtl}
+  .serif{font-family:'Cormorant Garamond',serif}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 32px}
+
+  /* ===== CUSTOM CURSOR ===== */
+  .cursor,.cursor-ring{
+    position:fixed;top:0;left:0;pointer-events:none;z-index:200;
+    transform:translate(-50%,-50%);will-change:transform;mix-blend-mode:difference;
+  }
+  .cursor{
+    width:8px;height:8px;background:#fff;border-radius:50%;
+    transition:width .25s var(--ease),height .25s var(--ease),background .25s;
+  }
+  .cursor-ring{
+    width:42px;height:42px;border:1px solid rgba(255,255,255,.7);border-radius:50%;
+    transition:width .35s var(--ease),height .35s var(--ease),border-color .25s,background .25s;
+    display:grid;place-items:center;color:#fff;font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-family:'Inter',sans-serif;
+  }
+  body.c-hover .cursor{width:0;height:0}
+  body.c-hover .cursor-ring{width:74px;height:74px;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.9)}
+  body.c-view .cursor-ring::after{content:attr(data-label)}
+  body.c-text .cursor{width:2px;height:22px;border-radius:1px}
+  body.c-text .cursor-ring{width:0;height:0;border:0}
+  @media(hover:none){.cursor,.cursor-ring{display:none}body{cursor:auto}}
+
+  /* ===== NAV ===== */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    padding:22px 32px;display:flex;justify-content:space-between;align-items:center;
+    transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent;
+  }
+  .nav.scrolled{background:rgba(10,10,10,.7);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);border-bottom-color:var(--line)}
+  .brand{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.28em;text-transform:uppercase}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2.4s infinite}
+  @keyframes pulse{50%{transform:scale(1.6);opacity:.3}}
+  .nav-menu{display:flex;gap:30px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .nav-menu a{position:relative;transition:color .3s}
+  .nav-menu a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
+  .nav-menu a:hover{color:var(--ink)}
+  .nav-menu a:hover::after{transform:scaleX(1)}
+  @media(max-width:860px){.nav-menu{display:none}}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;
+    background:#0a0a0a;
+  }
+  .hero-bg{
+    position:absolute;inset:-8%;will-change:transform;transition:transform .8s var(--ease);
+  }
+  .hero-bg img{
+    width:100%;height:100%;object-fit:cover;filter:grayscale(.6) contrast(1.05) brightness(.55);
+  }
+  .hero-bg::after{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(800px 600px at var(--mx,50%) var(--my,50%), rgba(193,39,45,.15), transparent 60%),
+      linear-gradient(180deg,rgba(10,10,10,.4) 0%,rgba(10,10,10,.75) 60%,#0a0a0a 100%);
+  }
+  .hero-inner{position:relative;z-index:2;padding:120px 0 80px;width:100%}
+  .hero-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end}
+  .hero-left{max-width:920px}
+  .eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:30px}
+  .eyebrow .line{width:40px;height:1px;background:var(--accent)}
+  h1.title{
+    font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:clamp(56px,11vw,180px);line-height:.92;letter-spacing:-.02em;
+    transform:translate3d(var(--tx,0),var(--ty,0),0);
+    transition:transform .6s var(--ease);
+  }
+  h1.title em{font-style:italic;color:var(--accent);font-weight:400}
+  .title-line{display:block;overflow:hidden}
+  .title-line span{display:block;animation:riseIn 1.2s var(--ease) both}
+  .title-line:nth-child(2) span{animation-delay:.12s}
+  .title-line:nth-child(3) span{animation-delay:.24s}
+  @keyframes riseIn{from{transform:translateY(105%)}to{transform:translateY(0)}}
+  .title-ar{font-family:'Tajawal',sans-serif;direction:rtl;font-size:clamp(18px,2.4vw,30px);color:#c7c0b5;margin-top:24px;font-weight:300;letter-spacing:0}
+  .hero-right{text-align:right;color:var(--muted);font-size:12px;letter-spacing:.28em;text-transform:uppercase;line-height:2}
+  .hero-right strong{color:var(--ink);font-weight:400;display:block;font-family:'Cormorant Garamond',serif;font-size:24px;letter-spacing:0;text-transform:none;font-style:italic}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr}.hero-right{text-align:left}}
+  .hero-btm{
+    position:absolute;left:32px;right:32px;bottom:28px;z-index:2;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted);
+  }
+  .hero-btm .arrow{display:inline-block;animation:bob 2s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(6px)}}
+
+  /* ===== MARQUEE ===== */
+  .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:22px 0;background:#0c0c0c}
+  .marquee-track{display:flex;gap:60px;width:max-content;animation:scroll 34s linear infinite;white-space:nowrap;color:#cfc8bd;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px}
+  .marquee-track span::before{content:"◉";color:var(--accent);margin-right:60px;font-style:normal}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+
+  /* ===== SECTIONS ===== */
+  section{padding:140px 0;position:relative}
+  .section-head{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:end;margin-bottom:70px}
+  .section-num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--accent);writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.3em}
+  .section-title{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(40px,6vw,84px);line-height:1;letter-spacing:-.01em}
+  .section-title em{font-style:italic;color:var(--accent)}
+  .kicker{font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+
+  /* ===== ABOUT ===== */
+  .about{background:#0a0a0a}
+  .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center}
+  .about-copy p{font-size:19px;color:#d6d2cb;margin-bottom:20px;font-weight:300}
+  .about-copy .ar{font-size:18px;color:#b8b1a6;margin-top:30px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px;padding-top:40px;border-top:1px solid var(--line)}
+  .stat strong{font-family:'Cormorant Garamond',serif;font-size:52px;color:var(--accent);line-height:1;display:block}
+  .stat span{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-top:10px;display:block}
+  .about-frame{
+    position:relative;aspect-ratio:3/4;border-radius:4px;overflow:hidden;
+    transition:transform .6s var(--ease),box-shadow .6s var(--ease);
+  }
+  .about-frame img{
+    width:100%;height:100%;object-fit:cover;filter:grayscale(.15);
+    transition:transform 1s var(--ease),filter .6s;
+  }
+  .about-frame:hover img{transform:scale(1.05);filter:grayscale(0)}
+  .about-frame::after{
+    content:"BTS · 2024";position:absolute;left:20px;bottom:20px;
+    font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#fff;
+    padding:8px 14px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border-radius:4px;
+  }
+  @media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:50px}.stats{grid-template-columns:1fr 1fr}}
+
+  /* ===== SERVICES — hover image reveal ===== */
+  .services{background:#0c0c0c}
+  .svc-list{border-top:1px solid var(--line)}
+  .svc-row{
+    display:grid;grid-template-columns:80px 1fr auto;gap:40px;align-items:center;
+    padding:44px 12px;border-bottom:1px solid var(--line);
+    position:relative;transition:padding .4s var(--ease);
+  }
+  .svc-row::before{
+    content:"";position:absolute;left:0;right:0;top:0;bottom:0;
+    background:linear-gradient(90deg,rgba(193,39,45,.06),transparent);
+    opacity:0;transition:opacity .5s;
+  }
+  .svc-row:hover{padding-left:30px;padding-right:30px}
+  .svc-row:hover::before{opacity:1}
+  .svc-num{font-family:'Cormorant Garamond',serif;color:var(--accent);font-size:18px;font-style:italic}
+  .svc-name{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,60px);font-weight:400;transition:color .4s,transform .5s var(--ease)}
+  .svc-row:hover .svc-name{transform:translateX(14px);color:#fff}
+  .svc-ar{font-family:'Tajawal',sans-serif;direction:rtl;color:var(--muted);font-size:16px;margin-top:4px;transition:color .4s}
+  .svc-row:hover .svc-ar{color:var(--accent)}
+  .svc-arrow{color:var(--muted);font-size:22px;transition:transform .5s var(--ease),color .3s}
+  .svc-row:hover .svc-arrow{color:var(--accent);transform:translateX(8px) rotate(-45deg)}
+  /* floating preview image that follows the cursor */
+  .svc-preview{
+    position:fixed;pointer-events:none;width:360px;aspect-ratio:4/5;
+    border-radius:6px;overflow:hidden;opacity:0;z-index:40;
+    transform:translate(-50%,-50%) scale(.85);
+    transition:opacity .35s var(--ease),transform .5s var(--ease);
+    box-shadow:0 30px 60px rgba(0,0,0,.6);
+  }
+  .svc-preview.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .svc-preview img{width:100%;height:100%;object-fit:cover}
+
+  /* ===== GALLERY — tilt cards ===== */
+  .gallery{background:#0a0a0a}
+  .gal-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+  .gal-item{
+    position:relative;overflow:hidden;border-radius:4px;cursor:none;
+    transform:perspective(1000px);will-change:transform;
+    transition:transform .5s var(--ease);
+  }
+  .gal-item img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease),filter .6s;filter:grayscale(.25)}
+  .gal-item:hover img{transform:scale(1.08);filter:grayscale(0)}
+  .gal-item::after{
+    content:attr(data-label);position:absolute;left:18px;bottom:16px;
+    font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#fff;opacity:0;
+    transition:opacity .4s var(--ease),transform .4s var(--ease);transform:translateY(10px);
+  }
+  .gal-item:hover::after{opacity:1;transform:translateY(0)}
+  .gal-item.sz-6{grid-column:span 6;aspect-ratio:4/3}
+  .gal-item.sz-4{grid-column:span 4;aspect-ratio:3/4}
+  .gal-item.sz-8{grid-column:span 8;aspect-ratio:16/9}
+  @media(max-width:900px){.gal-item.sz-6,.gal-item.sz-4,.gal-item.sz-8{grid-column:span 12;aspect-ratio:16/10}}
+
+  /* ===== WHY ===== */
+  .why{
+    position:relative;overflow:hidden;background:#080808;
+  }
+  .why::before{
+    content:"";position:absolute;width:600px;height:600px;border-radius:50%;
+    background:radial-gradient(circle,rgba(193,39,45,.1),transparent 60%);
+    left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%);
+    pointer-events:none;transition:transform .6s var(--ease);
+  }
+  .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line);position:relative}
+  .why-card{
+    padding:50px 32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    background:rgba(10,10,10,.4);backdrop-filter:blur(10px);position:relative;overflow:hidden;
+    transition:background .4s;
+  }
+  .why-card:hover{background:rgba(193,39,45,.06)}
+  .why-card .no{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--accent);font-size:14px;letter-spacing:.3em;display:block;margin-bottom:40px}
+  .why-card h4{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:28px;margin-bottom:14px;transition:transform .5s var(--ease)}
+  .why-card:hover h4{transform:translateX(6px)}
+  .why-card p{color:var(--muted);font-size:14.5px}
+  @media(max-width:900px){.why-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.why-grid{grid-template-columns:1fr}}
+
+  /* ===== CTA SECTION ===== */
+  .cta-row{
+    padding:120px 0;background:#0a0a0a;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    text-align:center;position:relative;overflow:hidden;
+  }
+  .cta-row .hug{max-width:980px;margin:0 auto;padding:0 32px;position:relative}
+  .cta-row h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(44px,8vw,110px);line-height:1;letter-spacing:-.01em}
+  .cta-row h2 em{font-style:italic;color:var(--accent)}
+  .cta-row p{color:var(--muted);margin-top:28px;font-size:17px}
+  .magnet{
+    display:inline-block;margin-top:44px;
+    padding:20px 40px;border:1px solid var(--ink);border-radius:999px;
+    font-size:12px;letter-spacing:.3em;text-transform:uppercase;
+    transition:background .4s,color .4s,border-color .4s,transform .25s var(--ease);
+    will-change:transform;
+  }
+  .magnet:hover{background:var(--accent);border-color:var(--accent);color:#111}
+
+  /* ===== CONTACT ===== */
+  .contact{background:#0c0c0c}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px}
+  .contact-left h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(42px,7vw,96px);line-height:1}
+  .contact-left .ar-h{font-family:'Tajawal',sans-serif;direction:rtl;color:#c0b9ad;font-size:26px;margin-top:16px}
+  .info-list{margin-top:40px;display:grid;gap:14px}
+  .info-row{
+    display:grid;grid-template-columns:110px 1fr auto;gap:24px;align-items:center;
+    padding:22px 4px;border-top:1px solid var(--line);transition:padding .4s var(--ease);
+  }
+  .info-row:last-child{border-bottom:1px solid var(--line)}
+  .info-row:hover{padding-left:16px}
+  .info-row .label{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  .info-row .value{font-size:17px;font-weight:400}
+  .info-row .go{color:var(--muted);transition:color .3s,transform .4s var(--ease)}
+  .info-row:hover .go{color:var(--accent);transform:translateX(6px)}
+  form{display:grid;gap:20px}
+  .field{display:grid;gap:8px}
+  label{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  input,textarea,select{
+    background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--ink);
+    padding:12px 0;font:inherit;font-size:16px;outline:none;transition:border-color .3s;
+  }
+  input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+  textarea{min-height:100px;resize:vertical}
+  select{background:#0c0c0c}
+  form button{
+    justify-self:start;margin-top:20px;padding:18px 36px;
+    background:transparent;border:1px solid var(--ink);color:var(--ink);
+    border-radius:999px;font-size:12px;letter-spacing:.3em;text-transform:uppercase;
+    cursor:none;transition:background .4s,color .4s,transform .25s var(--ease);will-change:transform;
+  }
+  form button:hover{background:var(--accent);color:#111;border-color:var(--accent)}
+  @media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:50px}}
+
+  /* ===== FOOTER ===== */
+  footer{padding:40px 0 30px;color:var(--muted);font-size:12px;letter-spacing:.15em;text-transform:uppercase}
+  .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  .foot em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--accent);text-transform:none;letter-spacing:0;font-size:16px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .reveal.on{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing" data-label=""></div>
+
+<!-- Hover image preview (for services) -->
+<div class="svc-preview" id="svcPrev"><img id="svcPrevImg" src="bts/bts-01.jpg" alt="" /></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#top" class="brand" data-cursor="hover"><span class="dot"></span> Eyes&nbsp;Films</a>
+  <div class="nav-menu">
+    <a href="#about" data-cursor="hover">About</a>
+    <a href="#services" data-cursor="hover">Services</a>
+    <a href="#gallery" data-cursor="hover">Gallery</a>
+    <a href="#why" data-cursor="hover">Why Us</a>
+    <a href="#contact" data-cursor="hover">Contact</a>
+  </div>
+  <a href="mailto:info@eyespro.ae" class="brand" data-cursor="hover">info@eyespro.ae</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-bg" id="heroBg"><img src="bts/bts-05.jpg" alt="On set — Eyes Films" /></div>
+  <div class="wrap hero-inner">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="eyebrow"><span class="line"></span> Abu Dhabi · Est. 2021</div>
+        <h1 class="title" id="heroTitle">
+          <span class="title-line"><span>We See</span></span>
+          <span class="title-line"><span>the <em>Unseen</em>.</span></span>
+        </h1>
+        <div class="title-ar ar">نـــرى ما لم يُــرى</div>
+      </div>
+      <div class="hero-right">
+        <strong>A creative production house.</strong>
+        Film · Photography<br/>Aerial · 3D · Color
+      </div>
+    </div>
+  </div>
+  <div class="hero-btm">
+    <span>Scroll to explore</span>
+    <span class="arrow">↓</span>
+    <span>01 / 05</span>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Cinematic Film</span><span>Documentary</span><span>Commercial</span><span>Photography</span><span>Aerial · Drone</span><span>3D &amp; Animation</span><span>Color Grading</span><span>Content Strategy</span>
+    <span>Cinematic Film</span><span>Documentary</span><span>Commercial</span><span>Photography</span><span>Aerial · Drone</span><span>3D &amp; Animation</span><span>Color Grading</span><span>Content Strategy</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num">— 01 / ABOUT</div>
+      <div>
+        <div class="kicker">Who we are</div>
+        <h2 class="section-title">A creative partner,<br/><em>not a vendor.</em></h2>
+      </div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p>Established in 2021 in the heart of Abu Dhabi, Eyes Films set out to redefine photography and media production in the UAE. We are more than a service provider — we're a creative partner for everyone who wants their vision brought to life with intention and craft.</p>
+        <p>Under our banner — <em class="serif">"We See the Unseen"</em> — we deliver visual work that merges craftsmanship with forward-thinking, turning every project into something worth remembering.</p>
+        <p class="ar">نحن شريك إبداعي لكل من يسعى لرؤية أفكاره تتحقق بأسلوب مبتكر — نؤمن بقوة الصورة والكلمة.</p>
+
+        <div class="stats">
+          <div class="stat"><strong>15+</strong><span>Years team experience</span></div>
+          <div class="stat"><strong>2021</strong><span>Founded · Abu Dhabi</span></div>
+          <div class="stat"><strong>∞</strong><span>Stories in the frame</span></div>
+        </div>
+      </div>
+
+      <div class="about-frame reveal" data-tilt data-cursor="view" data-cursor-label="BTS">
+        <img src="bts/bts-09.jpg" alt="Behind the scenes" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num">— 02 / SERVICES</div>
+      <div>
+        <div class="kicker">What we do</div>
+        <h2 class="section-title">Services built<br/>around <em>the frame</em>.</h2>
+      </div>
+    </div>
+
+    <div class="svc-list">
+      <a class="svc-row" data-preview="bts/bts-07.jpg" data-cursor="view" data-cursor-label="View">
+        <span class="svc-num">01</span>
+        <div>
+          <div class="svc-name">Cinematic Film &amp; Documentary</div>
+          <div class="svc-ar">إنتاج الأفلام الوثائقية والسينمائية</div>
+        </div>
+        <span class="svc-arrow">→</span>
+      </a>
+      <a class="svc-row" data-preview="bts/bts-03.jpg" data-cursor="view" data-cursor-label="View">
+        <span class="svc-num">02</span>
+        <div>
+          <div class="svc-name">Photography &amp; Events</div>
+          <div class="svc-ar">التصوير الفوتوغرافي والفعاليات</div>
+        </div>
+        <span class="svc-arrow">→</span>
+      </a>
+      <a class="svc-row" data-preview="bts/bts-14.jpg" data-cursor="view" data-cursor-label="View">
+        <span class="svc-num">03</span>
+        <div>
+          <div class="svc-name">Aerial &amp; Drone Cinematography</div>
+          <div class="svc-ar">التصوير الجوي بالدرون</div>
+        </div>
+        <span class="svc-arrow">→</span>
+      </a>
+      <a class="svc-row" data-preview="bts/bts-11.jpg" data-cursor="view" data-cursor-label="View">
+        <span class="svc-num">04</span>
+        <div>
+          <div class="svc-name">3D, Animation &amp; Motion</div>
+          <div class="svc-ar">ثلاثي الأبعاد والرسوم المتحركة</div>
+        </div>
+        <span class="svc-arrow">→</span>
+      </a>
+      <a class="svc-row" data-preview="bts/bts-06.jpg" data-cursor="view" data-cursor-label="View">
+        <span class="svc-num">05</span>
+        <div>
+          <div class="svc-name">Cinematic Color Grading</div>
+          <div class="svc-ar">التلوين السينمائي</div>
+        </div>
+        <span class="svc-arrow">→</span>
+      </a>
+      <a class="svc-row" data-preview="bts/bts-16.jpg" data-cursor="view" data-cursor-label="View">
+        <span class="svc-num">06</span>
+        <div>
+          <div class="svc-name">Content Strategy &amp; Management</div>
+          <div class="svc-ar">استراتيجية وإدارة المحتوى</div>
+        </div>
+        <span class="svc-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num">— 03 / FIELD NOTES</div>
+      <div>
+        <div class="kicker">Behind the scenes</div>
+        <h2 class="section-title">Field notes<br/>from <em>the set</em>.</h2>
+      </div>
+    </div>
+
+    <div class="gal-grid">
+      <div class="gal-item sz-8 reveal" data-tilt data-cursor="view" data-cursor-label="Frame" data-label="On set · Desert"><img src="bts/bts-05.jpg" alt=""/></div>
+      <div class="gal-item sz-4 reveal" data-tilt data-cursor="view" data-cursor-label="Frame" data-label="Lighting crew"><img src="bts/bts-07.jpg" alt=""/></div>
+      <div class="gal-item sz-4 reveal" data-tilt data-cursor="view" data-cursor-label="Frame" data-label="Pre-roll check"><img src="bts/bts-04.jpg" alt=""/></div>
+      <div class="gal-item sz-4 reveal" data-tilt data-cursor="view" data-cursor-label="Frame" data-label="DOP / frame"><img src="bts/bts-08.jpg" alt=""/></div>
+      <div class="gal-item sz-4 reveal" data-tilt data-cursor="view" data-cursor-label="Frame" data-label="Talent direction"><img src="bts/bts-10.jpg" alt=""/></div>
+      <div class="gal-item sz-6 reveal" data-tilt data-cursor="view" data-cursor-label="Frame" data-label="Drone ops"><img src="bts/bts-14.jpg" alt=""/></div>
+      <div class="gal-item sz-6 reveal" data-tilt data-cursor="view" data-cursor-label="Frame" data-label="Principal photography"><img src="bts/bts-11.jpg" alt=""/></div>
+      <div class="gal-item sz-4 reveal" data-tilt data-cursor="view" data-cursor-label="Frame" data-label="Magic hour"><img src="bts/bts-17.jpg" alt=""/></div>
+      <div class="gal-item sz-4 reveal" data-tilt data-cursor="view" data-cursor-label="Frame" data-label="Set design"><img src="bts/bts-18.jpg" alt=""/></div>
+      <div class="gal-item sz-4 reveal" data-tilt data-cursor="view" data-cursor-label="Frame" data-label="Monitor check"><img src="bts/bts-12.jpg" alt=""/></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num">— 04 / WHY US</div>
+      <div>
+        <div class="kicker">Why Eyes Films</div>
+        <h2 class="section-title">Craft, clarity,<br/>and a view from <em>Abu Dhabi</em>.</h2>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="why-grid reveal">
+      <div class="why-card"><span class="no">— 01</span><h4>Senior team</h4><p>A core crew with 15+ years across film, photography and post. No interns on set.</p></div>
+      <div class="why-card"><span class="no">— 02</span><h4>Creativity first</h4><p>Visual solutions that pair sharp creative thinking with cutting-edge tools to deliver work that stands out.</p></div>
+      <div class="why-card"><span class="no">— 03</span><h4>Built in Abu Dhabi</h4><p>We work from the region's creative capital and carry its rhythm into every frame we shoot.</p></div>
+      <div class="why-card"><span class="no">— 04</span><h4>Crafted, not churned</h4><p>We take on fewer projects so we can give each one the detail it deserves — from concept to color.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-row">
+  <div class="hug">
+    <div class="kicker" style="margin-bottom:20px">Start a project</div>
+    <h2>Let's create something<br/><em>worth watching.</em></h2>
+    <p>Tell us a little about your project — a film, a campaign, a brand story — and we'll get back within 24 hours.</p>
+    <a href="#contact" class="magnet" id="magnet" data-cursor="hover">Start a brief →</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num">— 05 / CONTACT</div>
+      <div>
+        <div class="kicker">Contact</div>
+        <h2 class="section-title">Say <em>hello</em>.</h2>
+      </div>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-left reveal">
+        <div class="ar-h ar">اتصل بنا — نسعد بسماع قصتك</div>
+        <div class="info-list">
+          <a class="info-row" href="mailto:info@eyespro.ae" data-cursor="hover">
+            <span class="label">Email</span><span class="value">info@eyespro.ae</span><span class="go">→</span>
+          </a>
+          <a class="info-row" href="tel:+971568866780" data-cursor="hover">
+            <span class="label">Phone</span><span class="value">+971 56 886 6780</span><span class="go">→</span>
+          </a>
+          <div class="info-row">
+            <span class="label">Studio</span><span class="value">Abu Dhabi, UAE</span><span class="go">◎</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Hours</span><span class="value">Sun–Thu · 10:00 → 19:00</span><span class="go">◷</span>
+          </div>
+        </div>
+      </div>
+
+      <form class="reveal" onsubmit="event.preventDefault(); const b=this.querySelector('button'); b.textContent='Sent ✓'; b.style.background='#7bd3a0'; b.style.color='#072'; b.style.borderColor='#7bd3a0';">
+        <div class="field"><label for="n">Your name</label><input id="n" required placeholder="Full name" /></div>
+        <div class="field"><label for="e">Email</label><input id="e" type="email" required placeholder="you@company.com" /></div>
+        <div class="field"><label for="s">Service</label>
+          <select id="s"><option>Cinematic Film</option><option>Photography</option><option>Aerial · Drone</option><option>3D &amp; Animation</option><option>Color Grading</option><option>Content Strategy</option></select>
+        </div>
+        <div class="field"><label for="m">Project brief</label><textarea id="m" placeholder="Tell us about the project, timeline and goals…"></textarea></div>
+        <button type="submit" data-cursor="hover">Send brief →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>© <span id="yr"></span> Eyes Films · Abu Dhabi · UAE</div>
+    <em>We See the Unseen.</em>
+    <div>Made with craft</div>
+  </div>
+</footer>
+
+<script>
+  /* ============================================
+     CUSTOM CURSOR + MOUSE INTERACTIONS
+     ============================================ */
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  const body   = document.body;
+  let mx = innerWidth/2, my = innerHeight/2;   // target
+  let rx = mx, ry = my;                         // ring pos (lagging)
+
+  addEventListener('mousemove', e=>{
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
+    // hero mouse-parallax
+    const hero = document.getElementById('heroBg');
+    const title = document.getElementById('heroTitle');
+    if(hero){
+      const cx = (e.clientX/innerWidth - .5) * 30;
+      const cy = (e.clientY/innerHeight - .5) * 30;
+      hero.style.transform = `translate(${cx}px, ${cy}px)`;
+      if(title){
+        title.style.setProperty('--tx', `${-cx*.5}px`);
+        title.style.setProperty('--ty', `${-cy*.4}px`);
+      }
+    }
+    // mouse-follow spotlight on "why"
+    const why = document.querySelector('.why');
+    if(why){
+      const r = why.getBoundingClientRect();
+      if(e.clientY > r.top && e.clientY < r.bottom){
+        why.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        why.style.setProperty('--my', `${e.clientY - r.top}px`);
+      }
+    }
+    // hero gradient follow
+    const heroEl = document.querySelector('.hero-bg');
+    if(heroEl){
+      const r = document.querySelector('.hero').getBoundingClientRect();
+      heroEl.style.setProperty('--mx', `${(e.clientX - r.left)}px`);
+      heroEl.style.setProperty('--my', `${(e.clientY - r.top)}px`);
+    }
+  });
+  // smooth lag for ring
+  (function loop(){
+    rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  })();
+
+  // cursor states for interactive elements
+  document.querySelectorAll('[data-cursor]').forEach(el=>{
+    const state = el.dataset.cursor;
+    const label = el.dataset.cursorLabel || '';
+    el.addEventListener('mouseenter', ()=>{
+      body.classList.add('c-'+state);
+      if(label){ ring.dataset.label = label; body.classList.add('c-view'); }
+    });
+    el.addEventListener('mouseleave', ()=>{
+      body.classList.remove('c-'+state, 'c-view');
+      ring.dataset.label = '';
+    });
+  });
+
+  // Inputs = text cursor
+  document.querySelectorAll('input,textarea,select').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>body.classList.add('c-text'));
+    el.addEventListener('mouseleave', ()=>body.classList.remove('c-text'));
+  });
+
+  /* ============================================
+     SERVICE HOVER IMAGE PREVIEW
+     ============================================ */
+  const svcPrev = document.getElementById('svcPrev');
+  const svcPrevImg = document.getElementById('svcPrevImg');
+  document.querySelectorAll('.svc-row').forEach(row=>{
+    row.addEventListener('mouseenter', ()=>{
+      svcPrevImg.src = row.dataset.preview;
+      svcPrev.classList.add('show');
+    });
+    row.addEventListener('mouseleave', ()=> svcPrev.classList.remove('show'));
+    row.addEventListener('mousemove', e=>{
+      svcPrev.style.left = e.clientX + 'px';
+      svcPrev.style.top  = e.clientY + 'px';
+    });
+  });
+
+  /* ============================================
+     3D TILT on [data-tilt]
+     ============================================ */
+  document.querySelectorAll('[data-tilt]').forEach(el=>{
+    el.addEventListener('mousemove', e=>{
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left)/r.width - .5;
+      const py = (e.clientY - r.top)/r.height - .5;
+      el.style.transform = `perspective(1000px) rotateX(${-py*6}deg) rotateY(${px*8}deg) translateZ(4px)`;
+    });
+    el.addEventListener('mouseleave', ()=>{ el.style.transform=''; });
+  });
+
+  /* ============================================
+     MAGNETIC BUTTON
+     ============================================ */
+  function magnetize(el, strength=.35){
+    el.addEventListener('mousemove', e=>{
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width/2;
+      const cy = r.top + r.height/2;
+      el.style.transform = `translate(${(e.clientX-cx)*strength}px, ${(e.clientY-cy)*strength}px)`;
+    });
+    el.addEventListener('mouseleave', ()=> el.style.transform='');
+  }
+  document.querySelectorAll('.magnet, form button').forEach(b=>magnetize(b, .35));
+
+  /* ============================================
+     NAV background on scroll
+     ============================================ */
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', ()=>{
+    nav.classList.toggle('scrolled', scrollY > 30);
+  });
+
+  /* ============================================
+     Reveal on scroll
+     ============================================ */
+  const io = new IntersectionObserver(es=>es.forEach(e=> e.isIntersecting && e.target.classList.add('on')), {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
