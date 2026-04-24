@@ -375,6 +375,25 @@
   /* reveal */
   .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
   .reveal.on{opacity:1;transform:none}
+
+  /* ===== VIDEO LIGHTBOX ===== */
+  .lightbox{
+    position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.92);
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .35s var(--ease);
+  }
+  .lightbox.open{opacity:1;pointer-events:auto}
+  .lightbox-inner{
+    position:relative;width:90vw;max-width:1200px;aspect-ratio:16/9;
+  }
+  .lightbox-inner iframe{width:100%;height:100%;border:0}
+  .lightbox-close{
+    position:absolute;top:-48px;right:0;
+    background:none;border:1px solid rgba(255,255,255,.3);border-radius:999px;
+    color:#fff;font-size:13px;letter-spacing:.2em;text-transform:uppercase;
+    padding:8px 20px;cursor:pointer;transition:background .3s,border-color .3s;
+  }
+  .lightbox-close:hover{background:var(--accent);border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -382,6 +401,14 @@
 <!-- Custom cursor -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing" data-label=""></div>
+
+<!-- Video lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightboxClose">Close ✕</button>
+    <iframe id="lightboxFrame" src="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav class="nav" id="nav">
@@ -661,22 +688,31 @@
   });
 
   /* ============================================
-     VIMEO EMBED ON CLICK
+     VIMEO LIGHTBOX ON CLICK
      ============================================ */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxFrame = document.getElementById('lightboxFrame');
+  const lightboxClose = document.getElementById('lightboxClose');
+
   document.querySelectorAll('.work-item').forEach(item=>{
     item.addEventListener('click', ()=>{
-      if(item.classList.contains('playing')) return;
       const id = item.dataset.vimeo;
       if(!id) return;
-      const iframe = document.createElement('iframe');
-      iframe.className = 'work-frame';
-      iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
-      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-      iframe.allowFullscreen = true;
-      item.appendChild(iframe);
-      item.classList.add('playing');
+      lightboxFrame.src = `https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
     });
   });
+
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    lightboxFrame.src = '';
+    document.body.style.overflow = '';
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e=>{ if(e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeLightbox(); });
 
   /* ============================================
      3D TILT
