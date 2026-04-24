@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Eyes Films — Professional Video Production</title>
+<meta name="description" content="Eyes Films — Abu Dhabi creative production house. Professional video production services for your brand." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --ink:#f4f1ea;
+    --muted:#8c8881;
+    --line:rgba(255,255,255,.09);
+    --accent:#C1272D;
+    --accent-2:#8f1b20;
+    --max:1340px;
+    --ease:cubic-bezier(.2,.8,.2,1);
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{background:var(--bg);color:var(--ink)}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;font-weight:300;line-height:1.55;letter-spacing:.005em;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none;
+  }
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  iframe{border:0;display:block}
+  .ar{font-family:'Tajawal',sans-serif;direction:rtl}
+  .serif{font-family:'Cormorant Garamond',serif}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 32px}
+
+  /* ===== CUSTOM CURSOR ===== */
+  .cursor,.cursor-ring{
+    position:fixed;top:0;left:0;pointer-events:none;z-index:200;
+    transform:translate(-50%,-50%);will-change:transform;mix-blend-mode:difference;
+  }
+  .cursor{
+    width:8px;height:8px;background:#fff;border-radius:50%;
+    transition:width .25s var(--ease),height .25s var(--ease),background .25s;
+  }
+  .cursor-ring{
+    width:42px;height:42px;border:1px solid rgba(255,255,255,.7);border-radius:50%;
+    transition:width .35s var(--ease),height .35s var(--ease),border-color .25s,background .25s;
+    display:grid;place-items:center;color:#fff;font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-family:'Inter',sans-serif;
+  }
+  body.c-hover .cursor{width:0;height:0}
+  body.c-hover .cursor-ring{width:74px;height:74px;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.9)}
+  body.c-view .cursor-ring::after{content:attr(data-label)}
+  body.c-text .cursor{width:2px;height:22px;border-radius:1px}
+  body.c-text .cursor-ring{width:0;height:0;border:0}
+  @media(hover:none){.cursor,.cursor-ring{display:none}body{cursor:auto}}
+
+  /* ===== NAV ===== */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    padding:22px 32px;display:flex;justify-content:space-between;align-items:center;
+    transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent;
+  }
+  .nav.scrolled{background:rgba(10,10,10,.7);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);border-bottom-color:var(--line)}
+  .brand{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.28em;text-transform:uppercase}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2.4s infinite}
+  @keyframes pulse{50%{transform:scale(1.6);opacity:.3}}
+  .nav-menu{display:flex;gap:30px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .nav-menu a{position:relative;transition:color .3s}
+  .nav-menu a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
+  .nav-menu a:hover, .nav-menu a.active{color:var(--ink)}
+  .nav-menu a:hover::after, .nav-menu a.active::after{transform:scaleX(1)}
+  .nav-cta{
+    padding:10px 20px;border:1px solid var(--ink);border-radius:999px;
+    font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);
+    transition:background .3s,color .3s;
+  }
+  .nav-cta:hover{background:var(--accent);color:#111;border-color:var(--accent)}
+  @media(max-width:860px){.nav-menu{display:none}.nav-cta{display:none}}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;
+    background:#0a0a0a;
+  }
+  .hero-bg{
+    position:absolute;inset:-8%;will-change:transform;transition:transform .8s var(--ease);
+  }
+  .hero-bg img{
+    width:100%;height:100%;object-fit:cover;filter:grayscale(.6) contrast(1.05) brightness(.55);
+  }
+  .hero-bg::after{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(800px 600px at var(--mx,50%) var(--my,50%), rgba(233,191,193,.15), transparent 60%),
+      linear-gradient(180deg,rgba(10,10,10,.4) 0%,rgba(10,10,10,.75) 60%,#0a0a0a 100%);
+  }
+  .hero-inner{position:relative;z-index:2;padding:120px 0 80px;width:100%}
+  .hero-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end}
+  .hero-left{max-width:1080px}
+  .eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:30px}
+  .eyebrow .line{width:40px;height:1px;background:var(--accent)}
+  h1.title{
+    font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:clamp(56px,11vw,180px);line-height:.92;letter-spacing:-.02em;
+    transform:translate3d(var(--tx,0),var(--ty,0),0);
+    transition:transform .6s var(--ease);
+  }
+  h1.title em{font-style:italic;color:var(--accent);font-weight:400}
+  .title-line{display:block;overflow:hidden}
+  .title-line span{display:block;animation:riseIn 1.2s var(--ease) both}
+  .title-line:nth-child(2) span{animation-delay:.12s}
+  .title-line:nth-child(3) span{animation-delay:.24s}
+  @keyframes riseIn{from{transform:translateY(105%)}to{transform:translateY(0)}}
+  .tagline{
+    font-family:'Inter',sans-serif;font-size:clamp(16px,1.6vw,20px);
+    color:#c7c0b5;margin-top:32px;font-weight:300;letter-spacing:.04em;max-width:620px;
+  }
+  .title-ar{font-family:'Tajawal',sans-serif;direction:rtl;font-size:clamp(18px,2.4vw,26px);color:#9d968b;margin-top:14px;font-weight:300;letter-spacing:0}
+  .hero-right{text-align:right;color:var(--muted);font-size:12px;letter-spacing:.28em;text-transform:uppercase;line-height:2}
+  .hero-right strong{color:var(--ink);font-weight:400;display:block;font-family:'Cormorant Garamond',serif;font-size:24px;letter-spacing:0;text-transform:none;font-style:italic}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr}.hero-right{text-align:left}}
+  .hero-btm{
+    position:absolute;left:32px;right:32px;bottom:28px;z-index:2;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted);
+  }
+  .hero-btm .arrow{display:inline-block;animation:bob 2s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(6px)}}
+
+  /* ===== MARQUEE ===== */
+  .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:22px 0;background:#0c0c0c}
+  .marquee-track{display:flex;gap:90px;width:max-content;animation:scroll 34s linear infinite;white-space:nowrap;color:#cfc8bd;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;align-items:center}
+  .marquee-track .mk-logo{display:inline-flex;align-items:center;gap:14px;color:#f2ece2;font-style:normal;font-family:inherit;font-weight:500;letter-spacing:.02em;text-transform:none}
+  .marquee-track .mk-logo .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block}
+  .marquee-track .mk-logo em{font-style:italic;color:var(--accent);margin-left:10px;font-family:'Cormorant Garamond',serif}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+
+  /* ===== SECTIONS ===== */
+  section{padding:140px 0;position:relative}
+  .section-head{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:end;margin-bottom:70px}
+  .section-num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--accent);writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.3em}
+  .section-title{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(40px,6vw,84px);line-height:1;letter-spacing:-.01em}
+  .section-title em{font-style:italic;color:var(--accent)}
+  .kicker{font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+
+  /* ===== WORKS ===== */
+  .works{background:#0a0a0a}
+  .works-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+  .work-item{
+    position:relative;overflow:hidden;border-radius:4px;cursor:none;
+    background:#111;aspect-ratio:16/9;
+    transform:perspective(1000px);will-change:transform;
+    transition:transform .5s var(--ease),box-shadow .5s var(--ease);
+  }
+  .work-item.sz-6{grid-column:span 6}
+  .work-item.sz-4{grid-column:span 4}
+  .work-item.sz-8{grid-column:span 8}
+  .work-item.sz-12{grid-column:span 12}
+  .work-item:hover{box-shadow:0 20px 60px rgba(0,0,0,.6)}
+
+  .work-thumb{
+    position:absolute;inset:0;width:100%;height:100%;
+    background-size:cover;background-position:center;
+    transition:transform 1.2s var(--ease),filter .6s;filter:grayscale(.3) brightness(.85);
+  }
+  .work-item:hover .work-thumb{transform:scale(1.06);filter:grayscale(0) brightness(1)}
+  .work-item::before{
+    content:"";position:absolute;inset:0;z-index:2;
+    background:linear-gradient(180deg,rgba(10,10,10,0) 40%,rgba(10,10,10,.85) 100%);
+    pointer-events:none;
+  }
+  .work-label{
+    position:absolute;left:22px;right:22px;bottom:20px;z-index:3;
+    display:flex;justify-content:space-between;align-items:end;gap:16px;
+    pointer-events:none;
+  }
+  .work-label .t{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#fff;line-height:1.1;
+    transform:translateY(6px);opacity:.92;transition:transform .5s var(--ease),opacity .4s;
+  }
+  .work-item:hover .work-label .t{transform:translateY(0);opacity:1}
+  .work-label .n{
+    font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);
+  }
+  .play-btn{
+    position:absolute;inset:0;z-index:3;display:grid;place-items:center;
+    pointer-events:none;
+  }
+  .play-btn .circle{
+    width:76px;height:76px;border-radius:50%;border:1px solid rgba(255,255,255,.85);
+    display:grid;place-items:center;background:rgba(10,10,10,.2);backdrop-filter:blur(4px);
+    transition:background .35s,transform .5s var(--ease);
+  }
+  .play-btn .circle::after{
+    content:"";width:0;height:0;margin-left:6px;
+    border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;
+  }
+  .work-item:hover .play-btn .circle{background:var(--accent);transform:scale(1.08)}
+  .work-item:hover .play-btn .circle::after{border-left-color:#111}
+
+  .work-frame{
+    position:absolute;inset:0;z-index:5;opacity:0;pointer-events:none;
+    transition:opacity .35s ease;
+  }
+  .work-item.playing .work-frame{opacity:1;pointer-events:auto}
+  .work-item.playing .work-thumb,
+  .work-item.playing::before,
+  .work-item.playing .play-btn,
+  .work-item.playing .work-label{opacity:0;transition:opacity .3s ease}
+
+  @media(max-width:900px){
+    .work-item.sz-6,.work-item.sz-4,.work-item.sz-8{grid-column:span 12}
+  }
+
+  /* ===== ABOUT ===== */
+  .about{background:#0c0c0c}
+  .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center}
+  .about-copy p{font-size:19px;color:#d6d2cb;margin-bottom:20px;font-weight:300}
+  .about-copy .ar{font-size:18px;color:#b8b1a6;margin-top:30px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px;padding-top:40px;border-top:1px solid var(--line)}
+  .stat strong{font-family:'Cormorant Garamond',serif;font-size:52px;color:var(--accent);line-height:1;display:block}
+  .stat span{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-top:10px;display:block}
+  .about-frame{
+    position:relative;aspect-ratio:3/4;border-radius:4px;overflow:hidden;
+    transition:transform .6s var(--ease),box-shadow .6s var(--ease);
+  }
+  .about-frame img{
+    width:100%;height:100%;object-fit:cover;filter:grayscale(.15);
+    transition:transform 1s var(--ease),filter .6s;
+  }
+  .about-frame:hover img{transform:scale(1.05);filter:grayscale(0)}
+  .about-frame::after{
+    content:"BTS · ABU DHABI";position:absolute;left:20px;bottom:20px;
+    font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#fff;
+    padding:8px 14px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border-radius:4px;
+  }
+
+  .contact-block{margin-top:60px;padding-top:50px;border-top:1px solid var(--line)}
+  .contact-block h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:32px;margin-bottom:30px}
+  .contact-block h3 em{font-style:italic;color:var(--accent)}
+  .info-list{display:grid;gap:0}
+  .info-row{
+    display:grid;grid-template-columns:140px 1fr auto;gap:24px;align-items:center;
+    padding:22px 4px;border-top:1px solid var(--line);transition:padding .4s var(--ease);
+  }
+  .info-row:last-child{border-bottom:1px solid var(--line)}
+  .info-row:hover{padding-left:16px}
+  .info-row .label{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  .info-row .value{font-size:17px;font-weight:400}
+  .info-row .go{color:var(--muted);transition:color .3s,transform .4s var(--ease)}
+  .info-row:hover .go{color:var(--accent);transform:translateX(6px)}
+  .socials{display:flex;gap:16px;margin-top:28px;flex-wrap:wrap}
+  .social-pill{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:12px 20px;border:1px solid var(--line);border-radius:999px;
+    font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);
+    transition:background .3s,border-color .3s,color .3s;
+  }
+  .social-pill:hover{background:var(--accent);border-color:var(--accent);color:#111}
+  .social-pill svg{width:14px;height:14px;fill:currentColor}
+
+  @media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:50px}.stats{grid-template-columns:1fr 1fr}.info-row{grid-template-columns:100px 1fr auto}}
+
+  /* ===== START PROJECT ===== */
+  .start{
+    background:#0a0a0a;position:relative;overflow:hidden;border-top:1px solid var(--line);
+  }
+  .start::before{
+    content:"";position:absolute;width:900px;height:900px;border-radius:50%;
+    background:radial-gradient(circle,rgba(233,191,193,.08),transparent 60%);
+    left:50%;top:40%;transform:translate(-50%,-50%);
+    pointer-events:none;
+  }
+  .start-hug{max-width:1080px;margin:0 auto;padding:0 32px;text-align:center;position:relative}
+  .start h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(44px,8vw,120px);line-height:1;letter-spacing:-.01em}
+  .start h2 em{font-style:italic;color:var(--accent)}
+  .start p.msg{color:#c7c0b5;margin-top:30px;font-size:clamp(18px,1.8vw,22px);font-weight:300;max-width:640px;margin-left:auto;margin-right:auto}
+  .magnet{
+    display:inline-block;margin-top:50px;
+    padding:22px 46px;border:1px solid var(--ink);border-radius:999px;
+    font-size:12px;letter-spacing:.3em;text-transform:uppercase;
+    transition:background .4s,color .4s,border-color .4s,transform .25s var(--ease);
+    will-change:transform;
+  }
+  .magnet:hover{background:var(--accent);border-color:var(--accent);color:#111}
+
+  .start-details{
+    margin-top:90px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    border-top:1px solid var(--line);border-left:1px solid var(--line);
+    text-align:left;
+  }
+  .start-detail{
+    padding:40px 32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    background:rgba(10,10,10,.4);transition:background .35s;
+  }
+  .start-detail:hover{background:rgba(233,191,193,.04)}
+  .start-detail .lbl{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:block}
+  .start-detail .val{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--ink)}
+  .start-detail .val em{font-style:italic;color:var(--accent)}
+  .start-detail a:hover .val{color:var(--accent)}
+  @media(max-width:900px){.start-details{grid-template-columns:1fr}}
+
+  /* ===== LET'S TALK (inline section) ===== */
+  .lets-talk{background:#0a0a0a;border-top:1px solid var(--line);position:relative;overflow:hidden}
+  .lets-talk::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(700px 500px at 80% 20%, rgba(193,39,45,.12), transparent 60%),
+      radial-gradient(500px 400px at 10% 90%, rgba(193,39,45,.06), transparent 60%);
+  }
+  .lets-talk .lt-inner{position:relative;z-index:2}
+  .lt-head{text-align:center;margin-bottom:80px}
+  .lt-head h2{
+    font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:clamp(56px,10vw,140px);line-height:.95;letter-spacing:-.02em;
+  }
+  .lt-head h2 em{font-style:italic;color:var(--accent)}
+  .lt-head p{color:#c7c0b5;margin-top:22px;font-size:clamp(17px,1.6vw,20px);max-width:620px;margin-left:auto;margin-right:auto}
+  .form-card{
+    background:rgba(255,255,255,.02);border:1px solid var(--line);
+    border-radius:6px;padding:54px 50px;backdrop-filter:blur(6px);
+    max-width:820px;margin:0 auto;
+  }
+  @media(max-width:700px){.form-card{padding:34px 24px}}
+  .form-card .kicker{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+  .form-card h3{
+    font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(32px,3.6vw,44px);line-height:1.05;margin-bottom:36px;
+  }
+  .form-card h3 em{font-style:italic;color:var(--accent)}
+  .lets-talk form{display:grid;gap:26px}
+  .lets-talk .row2{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  @media(max-width:560px){.lets-talk .row2{grid-template-columns:1fr}}
+  .lets-talk .field{display:grid;gap:8px}
+  .lets-talk label{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  .lets-talk input,.lets-talk textarea,.lets-talk select{
+    background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--ink);
+    padding:12px 0;font:inherit;font-size:16px;outline:none;transition:border-color .3s;font-family:inherit;
+  }
+  .lets-talk input:focus,.lets-talk textarea:focus,.lets-talk select:focus{border-color:var(--accent)}
+  .lets-talk textarea{min-height:110px;resize:vertical}
+  .lets-talk select{background:#0a0a0a}
+  .lets-talk select option{background:#0a0a0a;color:var(--ink)}
+  .lets-talk form button{
+    justify-self:start;margin-top:16px;padding:20px 44px;
+    background:var(--accent);border:1px solid var(--accent);color:#fff;
+    border-radius:999px;font-size:12px;letter-spacing:.3em;text-transform:uppercase;
+    cursor:none;transition:background .4s,color .4s,transform .25s var(--ease),box-shadow .4s;will-change:transform;
+    font-family:inherit;font-weight:500;
+  }
+  .lets-talk form button:hover{background:var(--accent-2);border-color:var(--accent-2);box-shadow:0 10px 30px rgba(193,39,45,.35)}
+  .form-note{margin-top:22px;font-size:12px;color:var(--muted);letter-spacing:.04em}
+
+  .final-cta{
+    padding:140px 0 160px;text-align:center;position:relative;overflow:hidden;
+    border-top:1px solid var(--line);
+  }
+  .final-cta::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(700px 500px at 50% 50%, rgba(193,39,45,.1), transparent 60%);
+  }
+  .final-cta .inner{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:0 32px}
+  .final-cta h3{
+    font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:clamp(48px,8vw,120px);line-height:1;letter-spacing:-.01em;
+  }
+  .final-cta h3 em{font-style:italic;color:var(--accent)}
+  .final-cta p{color:var(--muted);margin-top:24px;font-size:17px;max-width:540px;margin-left:auto;margin-right:auto}
+
+  /* ===== FOOTER ===== */
+  footer{padding:40px 0 30px;color:var(--muted);font-size:12px;letter-spacing:.15em;text-transform:uppercase;border-top:1px solid var(--line)}
+  .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  .foot em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--accent);text-transform:none;letter-spacing:0;font-size:16px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .reveal.on{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing" data-label=""></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#home" class="brand" data-cursor="hover"><span class="dot"></span> Eyes&nbsp;Films</a>
+  <div class="nav-menu">
+    <a href="#home" data-cursor="hover" class="navlink">Home</a>
+    <a href="#works" data-cursor="hover" class="navlink">Works</a>
+    <a href="#about" data-cursor="hover" class="navlink">About Us</a>
+    <a href="#lets-talk" data-cursor="hover" class="navlink">Let's Talk</a>
+  </div>
+  <a href="#lets-talk" class="nav-cta" data-cursor="hover">Let's Talk →</a>
+</nav>
+
+<!-- 01 · HERO / HOME -->
+<header class="hero" id="home" data-screen-label="01 Home">
+  <div class="hero-bg" id="heroBg"><img src="bts/bts-05.jpg" alt="On set — Eyes Films" /></div>
+  <div class="wrap hero-inner">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="eyebrow"><span class="line"></span> Abu Dhabi · Est. 2021</div>
+        <h1 class="title" id="heroTitle" style="--tx: -6.781200631911532px; --ty: 4.361717100633357px">
+          <span class="title-line"><span>Eyes Films</span></span>
+          <span class="title-line"><span>We See the <em style="color: rgb(193, 39, 45)">Unseen</em>.</span></span>
+        </h1>
+        <p class="tagline">Professional video production services for your brand.</p>
+      </div>
+      <div class="hero-right">
+</div>
+    </div>
+  </div>
+  <div class="hero-btm">
+    <span>Scroll to explore</span>
+    <span class="arrow">↓</span>
+    <span>
+</span>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
+    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
+    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
+    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
+    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
+    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
+    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
+    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
+  </div>
+</div>
+
+<!-- 02 · WORKS -->
+<section class="works" id="works" data-screen-label="02 Works">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num"> WORKS</div>
+      <div>
+        <div class="kicker">Latest projects</div>
+        <h2 class="section-title">Our <em>Works</em>.</h2>
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-item sz-8 reveal" data-vimeo="1186220134" data-cursor="view" data-cursor-label="Play">
+        <div class="work-thumb" style="background-image:url('https://vumbnail.com/1186220134.jpg')"></div>
+        <div class="play-btn"><div class="circle"></div></div>
+        <div class="work-label"><span class="t">Project 01 — Cinematic Film</span><span class="n">Vimeo · 134</span></div>
+      </div>
+      <div class="work-item sz-4 reveal" data-vimeo="1186217802" data-cursor="view" data-cursor-label="Play">
+        <div class="work-thumb" style="background-image:url('https://vumbnail.com/1186217802.jpg')"></div>
+        <div class="play-btn"><div class="circle"></div></div>
+        <div class="work-label"><span class="t">Project 02 — Brand Story</span><span class="n">Vimeo · 802</span></div>
+      </div>
+      <div class="work-item sz-4 reveal" data-vimeo="1186242939" data-cursor="view" data-cursor-label="Play">
+        <div class="work-thumb" style="background-image:url('https://vumbnail.com/1186242939.jpg')"></div>
+        <div class="play-btn"><div class="circle"></div></div>
+        <div class="work-label"><span class="t">Project 02 — Brand Film</span><span class="n">Vimeo · 939</span></div>
+      </div>
+
+      <div class="work-item sz-4 reveal" data-vimeo="1129459694" data-cursor="view" data-cursor-label="Play">
+        <div class="work-thumb" style="background-image:url('https://vumbnail.com/1129459694.jpg')"></div>
+        <div class="play-btn"><div class="circle"></div></div>
+        <div class="work-label"><span class="t">Project 03 — Commercial</span><span class="n">Vimeo · 694</span></div>
+      </div>
+      <div class="work-item sz-4 reveal" data-vimeo="1129434754" data-cursor="view" data-cursor-label="Play">
+        <div class="work-thumb" style="background-image:url('https://vumbnail.com/1129434754.jpg')"></div>
+        <div class="play-btn"><div class="circle"></div></div>
+        <div class="work-label"><span class="t">Project 04 — Documentary</span><span class="n">Vimeo · 754</span></div>
+      </div>
+      <div class="work-item sz-4 reveal" data-vimeo="1048820869" data-cursor="view" data-cursor-label="Play">
+        <div class="work-thumb" style="background-image:url('https://vumbnail.com/1048820869.jpg')"></div>
+        <div class="play-btn"><div class="circle"></div></div>
+        <div class="work-label"><span class="t">Project 05 — Campaign</span><span class="n">Vimeo · 869</span></div>
+      </div>
+
+      <div class="work-item sz-6 reveal" data-vimeo="1026769334" data-cursor="view" data-cursor-label="Play">
+        <div class="work-thumb" style="background-image:url('https://vumbnail.com/1026769334.jpg')"></div>
+        <div class="play-btn"><div class="circle"></div></div>
+        <div class="work-label"><span class="t">Project 06 — Short Film</span><span class="n">Vimeo · 334</span></div>
+      </div>
+      <div class="work-item sz-6 reveal" data-vimeo="1026813620" data-cursor="view" data-cursor-label="Play">
+        <div class="work-thumb" style="background-image:url('https://vumbnail.com/1026813620.jpg')"></div>
+        <div class="play-btn"><div class="circle"></div></div>
+        <div class="work-label"><span class="t">Project 07 — Visual Story</span><span class="n">Vimeo · 620</span></div>
+      </div>
+
+      <div class="work-item sz-12 reveal" data-vimeo="1129444713" data-cursor="view" data-cursor-label="Play">
+        <div class="work-thumb" style="background-image:url('https://vumbnail.com/1129444713.jpg')"></div>
+        <div class="play-btn"><div class="circle"></div></div>
+        <div class="work-label"><span class="t">Project 08 — Feature Reel</span><span class="n">Vimeo · 713</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · ABOUT US -->
+<section class="about" id="about" data-screen-label="03 About">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-num">           ABOUT</div>
+      <div>
+        <div class="kicker">Who we are</div>
+        <h2 class="section-title">A creative partner,<br/><em>not a vendor.</em></h2>
+      </div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p>Established in 2021 in the heart of Abu Dhabi, Eyes Films set out to redefine photography and media production in the UAE. We are more than a service provider — we're a creative partner for everyone who wants their vision brought to life with intention and craft.</p>
+        <p>Under our banner — <em class="serif">"We See the Unseen"</em> — we deliver visual work that merges craftsmanship with forward-thinking, turning every project into something worth remembering.</p>
+
+        <div class="stats">
+          <div class="stat"><strong>15+</strong><span>Years team experience</span></div>
+          <div class="stat"><strong>2021</strong><span>Founded · Abu Dhabi</span></div>
+          <div class="stat"><strong>∞</strong><span>Stories in the frame</span></div>
+        </div>
+      </div>
+
+      <div class="about-frame reveal" data-tilt data-cursor="view" data-cursor-label="BTS">
+        <img src="bts/bts-bdwn-01.jpg" alt="Behind the scenes — Eyes Films" />
+      </div>
+    </div>
+
+    <div class="contact-block reveal">
+      <h3>Get in <em>touch</em>.</h3>
+      <div class="info-list">
+        <a class="info-row" href="mailto:info@eyesfilms.ae" data-cursor="hover">
+          <span class="label">Email</span><span class="value">info@eyesfilms.ae</span><span class="go">→</span>
+        </a>
+        <a class="info-row" href="tel:+971568866780" data-cursor="hover">
+          <span class="label">Phone</span><span class="value">+971 56 886 6780</span><span class="go">→</span>
+        </a>
+        <div class="info-row">
+          <span class="label">Address</span><span class="value">Abu Dhabi, United Arab Emirates</span><span class="go">◎</span>
+        </div>
+      </div>
+
+      <div class="socials">
+        <a class="social-pill" href="https://www.instagram.com/eyesfilms_ae" target="_blank" rel="noopener" data-cursor="hover">
+          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.43.37 1.06.42 2.23.07 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.05 1.17-.25 1.8-.42 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.17-1.06.37-2.23.42-1.25.07-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.42a3.85 3.85 0 0 1-1.38-.9 3.85 3.85 0 0 1-.9-1.38c-.17-.43-.37-1.06-.42-2.23C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.05-1.17.25-1.8.42-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.17 1.06-.37 2.23-.42C8.4 2.2 8.8 2.2 12 2.2ZM12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.34 4.14.63c-.79.31-1.46.72-2.13 1.38C1.35 2.68.94 3.35.63 4.14.34 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.27 2.15.56 2.91.31.79.72 1.46 1.38 2.13.67.66 1.34 1.07 2.13 1.38.76.29 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.27 2.91-.56a5.85 5.85 0 0 0 2.13-1.38 5.85 5.85 0 0 0 1.38-2.13c.29-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.27-2.15-.56-2.91A5.85 5.85 0 0 0 22.01 2c-.67-.66-1.34-1.07-2.13-1.38-.76-.29-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0Zm0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84Zm0 10.16A4 4 0 1 1 12 8a4 4 0 0 1 0 8Zm6.4-11.84a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/></svg>
+          Instagram
+        </a>
+        <a class="social-pill" href="https://vimeo.com/user230044165" target="_blank" rel="noopener" data-cursor="hover">
+          <svg viewBox="0 0 24 24"><path d="M23.98 6.34c-.11 2.37-1.76 5.61-4.96 9.72-3.3 4.29-6.1 6.44-8.4 6.44-1.42 0-2.62-1.31-3.6-3.94-.65-2.39-1.31-4.78-1.96-7.17-.73-2.62-1.5-3.94-2.34-3.94-.18 0-.8.38-1.86 1.12L0 7.13c1.17-1.03 2.33-2.07 3.48-3.12 1.57-1.36 2.75-2.07 3.54-2.14 1.86-.18 3.01 1.09 3.45 3.82.47 2.95.8 4.78.98 5.49.54 2.45 1.13 3.68 1.78 3.68.5 0 1.25-.79 2.26-2.37 1-1.58 1.54-2.79 1.61-3.62.14-1.34-.39-2.02-1.61-2.02-.57 0-1.17.13-1.78.39 1.17-3.84 3.41-5.7 6.72-5.59 2.45.07 3.6 1.66 3.46 4.77Z"/></svg>
+          Vimeo
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · LET'S TALK (Start brief only) -->
+<section class="lets-talk" id="lets-talk" data-screen-label="04 Let's Talk">
+  <div class="wrap lt-inner">
+    <div class="lt-head reveal">
+      <div class="kicker" style="color:var(--accent);margin-bottom:18px">— 04 / Let's Talk</div>
+      <h2>Let's create something<br/><em>worth watching.</em></h2>
+    </div>
+
+    <div class="form-card reveal">
+      <div class="kicker">Start a brief</div>
+      <h3>Tell us about your <em>project</em>.</h3>
+
+      <form id="ltForm" onsubmit="event.preventDefault(); submitBrief();">
+        <div class="row2">
+          <div class="field"><label for="n">Your name</label><input id="n" name="name" required placeholder="Full name" /></div>
+          <div class="field"><label for="c">Company</label><input id="c" name="company" placeholder="Company or brand" /></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="e">Email</label><input id="e" name="email" type="email" required placeholder="you@company.com" /></div>
+          <div class="field"><label for="p">Phone</label><input id="p" name="phone" placeholder="+971 ..." /></div>
+        </div>
+        <div class="field">
+          <label for="s">Service</label>
+          <select id="s" name="service">
+            <option>Cinematic Film &amp; Documentary</option>
+            <option>Photography &amp; Events</option>
+            <option>Aerial &amp; Drone Cinematography</option>
+            <option>3D, Animation &amp; Motion</option>
+            <option>Cinematic Color Grading</option>
+            <option>Content Strategy &amp; Management</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label for="m">Project brief</label><textarea id="m" name="brief" placeholder="Tell us about the project, timeline and goals…"></textarea></div>
+        <button type="submit" data-cursor="hover">Send brief →</button>
+      </form>
+      <p class="form-note">By sending, you agree we may reach out by email or phone to discuss your project.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<footer>
+  <div class="wrap foot">
+    <div>© <span id="yr"></span> Eyes Films · Abu Dhabi · UAE</div>
+    <em>We See the Unseen.</em>
+    <div>Made with craft</div>
+  </div>
+</footer>
+
+<script>
+  /* ============================================
+     CUSTOM CURSOR
+     ============================================ */
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  const body   = document.body;
+  let mx = innerWidth/2, my = innerHeight/2;
+  let rx = mx, ry = my;
+
+  addEventListener('mousemove', e=>{
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
+    const hero = document.getElementById('heroBg');
+    const title = document.getElementById('heroTitle');
+    if(hero){
+      const cx = (e.clientX/innerWidth - .5) * 30;
+      const cy = (e.clientY/innerHeight - .5) * 30;
+      hero.style.transform = `translate(${cx}px, ${cy}px)`;
+      if(title){
+        title.style.setProperty('--tx', `${-cx*.5}px`);
+        title.style.setProperty('--ty', `${-cy*.4}px`);
+      }
+    }
+    const heroEl = document.querySelector('.hero-bg');
+    if(heroEl){
+      const r = document.querySelector('.hero').getBoundingClientRect();
+      heroEl.style.setProperty('--mx', `${(e.clientX - r.left)}px`);
+      heroEl.style.setProperty('--my', `${(e.clientY - r.top)}px`);
+    }
+  });
+  (function loop(){
+    rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  })();
+
+  document.querySelectorAll('[data-cursor]').forEach(el=>{
+    const state = el.dataset.cursor;
+    const label = el.dataset.cursorLabel || '';
+    el.addEventListener('mouseenter', ()=>{
+      body.classList.add('c-'+state);
+      if(label){ ring.dataset.label = label; body.classList.add('c-view'); }
+    });
+    el.addEventListener('mouseleave', ()=>{
+      body.classList.remove('c-'+state, 'c-view');
+      ring.dataset.label = '';
+    });
+  });
+
+  document.querySelectorAll('input,textarea,select').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>body.classList.add('c-text'));
+    el.addEventListener('mouseleave', ()=>body.classList.remove('c-text'));
+  });
+
+  /* ============================================
+     VIMEO EMBED ON CLICK
+     ============================================ */
+  document.querySelectorAll('.work-item').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      if(item.classList.contains('playing')) return;
+      const id = item.dataset.vimeo;
+      if(!id) return;
+      const iframe = document.createElement('iframe');
+      iframe.className = 'work-frame';
+      iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+      iframe.allowFullscreen = true;
+      item.appendChild(iframe);
+      item.classList.add('playing');
+    });
+  });
+
+  /* ============================================
+     3D TILT
+     ============================================ */
+  document.querySelectorAll('[data-tilt]').forEach(el=>{
+    el.addEventListener('mousemove', e=>{
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left)/r.width - .5;
+      const py = (e.clientY - r.top)/r.height - .5;
+      el.style.transform = `perspective(1000px) rotateX(${-py*6}deg) rotateY(${px*8}deg) translateZ(4px)`;
+    });
+    el.addEventListener('mouseleave', ()=>{ el.style.transform=''; });
+  });
+
+  /* ============================================
+     MAGNETIC BUTTON
+     ============================================ */
+  function magnetize(el, strength=.35){
+    el.addEventListener('mousemove', e=>{
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width/2;
+      const cy = r.top + r.height/2;
+      el.style.transform = `translate(${(e.clientX-cx)*strength}px, ${(e.clientY-cy)*strength}px)`;
+    });
+    el.addEventListener('mouseleave', ()=> el.style.transform='');
+  }
+  document.querySelectorAll('.magnet').forEach(b=>magnetize(b, .35));
+
+  /* ============================================
+     NAV scroll + active link
+     ============================================ */
+  const nav = document.getElementById('nav');
+  const navLinks = document.querySelectorAll('.navlink');
+  const sections = ['home','works','about','lets-talk'].map(id=>document.getElementById(id));
+  function updateNavState(){
+    nav.classList.toggle('scrolled', scrollY > 30);
+    const y = scrollY + innerHeight*0.35;
+    let active = 'home';
+    sections.forEach(s=>{ if(s && s.offsetTop <= y) active = s.id; });
+    navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === '#'+active));
+  }
+  addEventListener('scroll', updateNavState);
+  updateNavState();
+
+  /* ============================================
+     Reveal on scroll
+     ============================================ */
+  const io = new IntersectionObserver(es=>es.forEach(e=> e.isIntersecting && e.target.classList.add('on')), {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  window.submitBrief = function(){
+    const f = document.getElementById('ltForm');
+    const btn = f.querySelector('button');
+    btn.textContent = 'Sent ✓';
+    btn.style.background = '#2a8f5f';
+    btn.style.borderColor = '#2a8f5f';
+    setTimeout(()=>{ f.reset(); btn.textContent='Send brief →'; btn.style.background='var(--accent)'; btn.style.borderColor='var(--accent)'; }, 2600);
+  };
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
