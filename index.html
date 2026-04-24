@@ -375,6 +375,25 @@
   /* reveal */
   .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
   .reveal.on{opacity:1;transform:none}
+
+  /* ===== VIDEO LIGHTBOX ===== */
+  .lightbox{
+    position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.92);
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .35s var(--ease);
+  }
+  .lightbox.open{opacity:1;pointer-events:auto}
+  .lightbox-inner{
+    position:relative;width:90vw;max-width:1200px;aspect-ratio:16/9;
+  }
+  .lightbox-inner iframe{width:100%;height:100%;border:0}
+  .lightbox-close{
+    position:absolute;top:-48px;right:0;
+    background:none;border:1px solid rgba(255,255,255,.3);border-radius:999px;
+    color:#fff;font-size:13px;letter-spacing:.2em;text-transform:uppercase;
+    padding:8px 20px;cursor:pointer;transition:background .3s,border-color .3s;
+  }
+  .lightbox-close:hover{background:var(--accent);border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -383,9 +402,17 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing" data-label=""></div>
 
+<!-- Video lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightboxClose">Close ✕</button>
+    <iframe id="lightboxFrame" src="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav class="nav" id="nav">
-  <a href="#home" class="brand" data-cursor="hover"><span class="dot"></span> Eyes&nbsp;Films</a>
+  <a href="#home" class="brand" data-cursor="hover"><img src="uploads/الشعار.png" alt="Eyes Films" style="height:38px;width:auto;display:block;" /></a>
   <div class="nav-menu">
     <a href="#home" data-cursor="hover" class="navlink">Home</a>
     <a href="#works" data-cursor="hover" class="navlink">Works</a>
@@ -423,14 +450,14 @@
 <!-- MARQUEE -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
-    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
-    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
-    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
-    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
-    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
-    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
-    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
-    <span class="mk-logo"><span class="dot"></span>Eyes&nbsp;Films<em>We See the Unseen.</em></span>
+    <span class="mk-logo"><img src="uploads/الشعار.png" alt="Eyes Films" style="height:28px;width:auto;vertical-align:middle;" /><em>We See the Unseen.</em></span>
+    <span class="mk-logo"><img src="uploads/الشعار.png" alt="Eyes Films" style="height:28px;width:auto;vertical-align:middle;" /><em>We See the Unseen.</em></span>
+    <span class="mk-logo"><img src="uploads/الشعار.png" alt="Eyes Films" style="height:28px;width:auto;vertical-align:middle;" /><em>We See the Unseen.</em></span>
+    <span class="mk-logo"><img src="uploads/الشعار.png" alt="Eyes Films" style="height:28px;width:auto;vertical-align:middle;" /><em>We See the Unseen.</em></span>
+    <span class="mk-logo"><img src="uploads/الشعار.png" alt="Eyes Films" style="height:28px;width:auto;vertical-align:middle;" /><em>We See the Unseen.</em></span>
+    <span class="mk-logo"><img src="uploads/الشعار.png" alt="Eyes Films" style="height:28px;width:auto;vertical-align:middle;" /><em>We See the Unseen.</em></span>
+    <span class="mk-logo"><img src="uploads/الشعار.png" alt="Eyes Films" style="height:28px;width:auto;vertical-align:middle;" /><em>We See the Unseen.</em></span>
+    <span class="mk-logo"><img src="uploads/الشعار.png" alt="Eyes Films" style="height:28px;width:auto;vertical-align:middle;" /><em>We See the Unseen.</em></span>
   </div>
 </div>
 
@@ -449,50 +476,50 @@
       <div class="work-item sz-8 reveal" data-vimeo="1186220134" data-cursor="view" data-cursor-label="Play">
         <div class="work-thumb" style="background-image:url('https://vumbnail.com/1186220134.jpg')"></div>
         <div class="play-btn"><div class="circle"></div></div>
-        <div class="work-label"><span class="t">Project 01 — Cinematic Film</span><span class="n">Vimeo · 134</span></div>
+        <div class="work-label"><span class="t">Project 01 — Cinematic Film</span></div>
       </div>
       <div class="work-item sz-4 reveal" data-vimeo="1186217802" data-cursor="view" data-cursor-label="Play">
         <div class="work-thumb" style="background-image:url('https://vumbnail.com/1186217802.jpg')"></div>
         <div class="play-btn"><div class="circle"></div></div>
-        <div class="work-label"><span class="t">Project 02 — Brand Story</span><span class="n">Vimeo · 802</span></div>
+        <div class="work-label"><span class="t">Project 02 — Brand Story</span></div>
       </div>
       <div class="work-item sz-4 reveal" data-vimeo="1186242939" data-cursor="view" data-cursor-label="Play">
         <div class="work-thumb" style="background-image:url('https://vumbnail.com/1186242939.jpg')"></div>
         <div class="play-btn"><div class="circle"></div></div>
-        <div class="work-label"><span class="t">Project 02 — Brand Film</span><span class="n">Vimeo · 939</span></div>
+        <div class="work-label"><span class="t">Project 02 — Brand Film</span></div>
       </div>
 
       <div class="work-item sz-4 reveal" data-vimeo="1129459694" data-cursor="view" data-cursor-label="Play">
         <div class="work-thumb" style="background-image:url('https://vumbnail.com/1129459694.jpg')"></div>
         <div class="play-btn"><div class="circle"></div></div>
-        <div class="work-label"><span class="t">Project 03 — Commercial</span><span class="n">Vimeo · 694</span></div>
+        <div class="work-label"><span class="t">Project 03 — Commercial</span></div>
       </div>
       <div class="work-item sz-4 reveal" data-vimeo="1129434754" data-cursor="view" data-cursor-label="Play">
         <div class="work-thumb" style="background-image:url('https://vumbnail.com/1129434754.jpg')"></div>
         <div class="play-btn"><div class="circle"></div></div>
-        <div class="work-label"><span class="t">Project 04 — Documentary</span><span class="n">Vimeo · 754</span></div>
+        <div class="work-label"><span class="t">Project 04 — Documentary</span></div>
       </div>
       <div class="work-item sz-4 reveal" data-vimeo="1048820869" data-cursor="view" data-cursor-label="Play">
         <div class="work-thumb" style="background-image:url('https://vumbnail.com/1048820869.jpg')"></div>
         <div class="play-btn"><div class="circle"></div></div>
-        <div class="work-label"><span class="t">Project 05 — Campaign</span><span class="n">Vimeo · 869</span></div>
+        <div class="work-label"><span class="t">Project 05 — Campaign</span></div>
       </div>
 
       <div class="work-item sz-6 reveal" data-vimeo="1026769334" data-cursor="view" data-cursor-label="Play">
         <div class="work-thumb" style="background-image:url('https://vumbnail.com/1026769334.jpg')"></div>
         <div class="play-btn"><div class="circle"></div></div>
-        <div class="work-label"><span class="t">Project 06 — Short Film</span><span class="n">Vimeo · 334</span></div>
+        <div class="work-label"><span class="t">Project 06 — Short Film</span></div>
       </div>
       <div class="work-item sz-6 reveal" data-vimeo="1026813620" data-cursor="view" data-cursor-label="Play">
         <div class="work-thumb" style="background-image:url('https://vumbnail.com/1026813620.jpg')"></div>
         <div class="play-btn"><div class="circle"></div></div>
-        <div class="work-label"><span class="t">Project 07 — Visual Story</span><span class="n">Vimeo · 620</span></div>
+        <div class="work-label"><span class="t">Project 07 — Visual Story</span></div>
       </div>
 
       <div class="work-item sz-12 reveal" data-vimeo="1129444713" data-cursor="view" data-cursor-label="Play">
         <div class="work-thumb" style="background-image:url('https://vumbnail.com/1129444713.jpg')"></div>
         <div class="play-btn"><div class="circle"></div></div>
-        <div class="work-label"><span class="t">Project 08 — Feature Reel</span><span class="n">Vimeo · 713</span></div>
+        <div class="work-label"><span class="t">Project 08 — Feature Reel</span></div>
       </div>
     </div>
   </div>
@@ -661,22 +688,40 @@
   });
 
   /* ============================================
-     VIMEO EMBED ON CLICK
+     VIMEO LIGHTBOX ON CLICK
      ============================================ */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxFrame = document.getElementById('lightboxFrame');
+  const lightboxClose = document.getElementById('lightboxClose');
+
   document.querySelectorAll('.work-item').forEach(item=>{
     item.addEventListener('click', ()=>{
-      if(item.classList.contains('playing')) return;
       const id = item.dataset.vimeo;
       if(!id) return;
-      const iframe = document.createElement('iframe');
-      iframe.className = 'work-frame';
-      iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
-      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-      iframe.allowFullscreen = true;
-      item.appendChild(iframe);
-      item.classList.add('playing');
+      lightboxFrame.src = `https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      const el = lightbox;
+      setTimeout(()=>{
+        if(el.requestFullscreen) el.requestFullscreen();
+        else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      }, 200);
     });
   });
+
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    lightboxFrame.src = '';
+    document.body.style.overflow = '';
+    if(document.fullscreenElement || document.webkitFullscreenElement){
+      if(document.exitFullscreen) document.exitFullscreen();
+      else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e=>{ if(e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeLightbox(); });
 
   /* ============================================
      3D TILT
