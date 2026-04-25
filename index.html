@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Eyes Films — Professional Video Production</title>
+<title>eyesfilm.ae</title>
 <meta name="description" content="Eyes Films — Abu Dhabi creative production house. Professional video production services for your brand." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -77,7 +77,7 @@
   }
   .nav-cta:hover{background:var(--accent);color:#111;border-color:var(--accent)}
   @media(max-width:860px){.nav-menu{display:none}.nav-cta{display:none}}
-  @media(max-width:600px){.nav{padding:16px 20px}.hero-btm{left:20px;right:20px}.start-hug{padding:0 20px}}
+  @media(max-width:600px){.nav{padding:16px 20px}.hero-btm{left:32px;right:32px}.start-hug{padding:0 20px}.hero-inner{padding-left:20px;padding-right:20px}.hero-left{text-align:left;padding-left:10px}h1.title{font-size:clamp(28px,8vw,40px)}.tagline{font-size:14px;white-space:nowrap;max-width:100%;margin-top:12px}.eyebrow{font-size:8px}}
 
   /* ===== HERO ===== */
   .hero{
@@ -604,7 +604,7 @@
       <div class="kicker">Start a brief</div>
       <h3>Tell us about your <em>project</em>.</h3>
 
-      <form id="ltForm" onsubmit="event.preventDefault(); submitBrief();">
+      <form id="ltForm" action="https://formspree.io/f/maqavzdy" method="POST" onsubmit="submitBrief(event);">
         <div class="row2">
           <div class="field"><label for="n">Your name</label><input id="n" name="name" required placeholder="Full name" /></div>
           <div class="field"><label for="c">Company</label><input id="c" name="company" placeholder="Company or brand" /></div>
@@ -783,13 +783,34 @@
   const io = new IntersectionObserver(es=>es.forEach(e=> e.isIntersecting && e.target.classList.add('on')), {threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-  window.submitBrief = function(){
+  window.submitBrief = function(e){
+    e.preventDefault();
     const f = document.getElementById('ltForm');
     const btn = f.querySelector('button');
-    btn.textContent = 'Sent ✓';
-    btn.style.background = '#2a8f5f';
-    btn.style.borderColor = '#2a8f5f';
-    setTimeout(()=>{ f.reset(); btn.textContent='Send brief →'; btn.style.background='var(--accent)'; btn.style.borderColor='var(--accent)'; }, 2600);
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    fetch('https://formspree.io/f/maqavzdy', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(f)
+    }).then(r => {
+      if(r.ok){
+        btn.textContent = 'Sent ✓';
+        btn.style.background = '#2a8f5f';
+        btn.style.borderColor = '#2a8f5f';
+        setTimeout(()=>{ f.reset(); btn.textContent='Send brief →'; btn.style.background='var(--accent)'; btn.style.borderColor='var(--accent)'; btn.disabled=false; }, 2600);
+      } else {
+        btn.textContent = 'Error — try again';
+        btn.style.background = '#c1272d';
+        btn.style.borderColor = '#c1272d';
+        btn.disabled = false;
+      }
+    }).catch(()=>{
+      btn.textContent = 'Error — try again';
+      btn.style.background = '#c1272d';
+      btn.style.borderColor = '#c1272d';
+      btn.disabled = false;
+    });
   };
 
   document.getElementById('yr').textContent = new Date().getFullYear();
